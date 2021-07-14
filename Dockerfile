@@ -1,9 +1,14 @@
+FROM node:lts as build
+WORKDIR /app
+COPY web-ui/ /app
+RUN npm ci
+RUN npm run build
+
 FROM alpine
 RUN apk add --no-cache nginx py3-pip
 RUN pip install honcho
-#COPY --from=build /app/_site /usr/share/nginx/html
 
-COPY index.html /usr/share/nginx/html/
+COPY --from=build /app/build /usr/share/nginx/html
 COPY nginx/nginx.conf /etc/nginx/nginx.conf
 COPY nginx/conf.d/watch-party.conf /etc/nginx/conf.d/watch-party.conf
 
