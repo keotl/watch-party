@@ -30,4 +30,5 @@ COPY main.py .
 ADD ./watch_party watch_party
 
 CMD honcho start -f .Procfile
+EXPOSE 80
 
