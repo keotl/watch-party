@@ -19,7 +19,7 @@ RUN chown -R watch-party:watch-party /var/lib/nginx/
 RUN chown -R watch-party:watch-party /var/log/nginx/
 
 WORKDIR /app
-#USER watch-party:watch-party
+USER watch-party:watch-party
 ENV PATH="${PATH}:${HOME}/.local/bin"
 
 COPY requirements.txt .
@@ -30,4 +30,4 @@ COPY main.py .
 ADD ./watch_party watch_party
 
 CMD honcho start -f .Procfile
-EXPOSE 80
+EXPOSE 5000
