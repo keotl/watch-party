@@ -25,11 +25,9 @@ ENV PATH="${PATH}:${HOME}/.local/bin"
 COPY requirements.txt .
 RUN pip3 install -r requirements.txt
 
-COPY Procfile .
+COPY .Procfile .
 COPY main.py .
 ADD ./watch_party watch_party
 
-
-
-CMD honcho start
+CMD honcho start -f .Procfile
 
