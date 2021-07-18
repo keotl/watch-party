@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useLocation } from "react-router-dom";
 import { useRoom } from "../api/useRoom";
 import styles from "./VideoPlayer.module.css";
@@ -36,7 +36,11 @@ export function VideoPlayer() {
     return { isPaused: true, currentTime: 0 };
   }
 
-  const room = useRoom(pathname, onPlay, onPause, getCurrentState);
+    const room = useRoom(pathname, onPlay, onPause, getCurrentState);
+
+    useEffect(() => {
+	setFormUrl(room.videoUrl);
+    }, [room.videoUrl]);
 
   return (
     <div className={styles.container}>
