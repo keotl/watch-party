@@ -1,5 +1,4 @@
 import React from "react";
-import logo from "./logo.svg";
 import "./App.css";
 import { VideoPlayer } from "./app/components/VideoPlayer";
 
@@ -11,7 +10,7 @@ function App() {
   if (history.location.pathname === "/") {
     const roomId = Math.round(Math.random() * 1000000000000);
     history.push(`/${roomId}`);
-    return <></>;
+    // return <></>;
   }
 
   return (
