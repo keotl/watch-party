@@ -4,7 +4,7 @@ A simple synchronized video player using websockets. 🍿🎦
 
 ## Instructions
 1. Go to `https://watch-party.app.pxel.pw`.
-2. Paste your video file url over HTTPS in the input box and click
+2. Paste your video file url over HTTP or HTTPS in the input box and click
    `Set URL`.
 3. Copy the page URL and send it to your friends!
 
