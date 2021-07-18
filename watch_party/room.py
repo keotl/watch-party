@@ -23,7 +23,9 @@ class Room(object):
     async def add_user(self, user_channel: Channel):
         with self._lock:
             self._channels.append(user_channel)
-            await self._request_resync(user_channel.name())
+            success = await self._request_resync(user_channel.name())
+            if not success:
+                await self._notify_channel(user_channel)
 
     async def receive_message(self, message: Message, sender: str):
         with self._lock:
@@ -50,15 +52,16 @@ class Room(object):
             for i in to_remove[::-1]:
                 self._channels.pop(i)
 
-    async def _request_resync(self, sender: str):
+    async def _request_resync(self, sender: str) -> bool:
         for c in self._channels:
             if c.name() == sender:
                 continue
             try:
                 await c.send(RequestResyncMessage())
-                return
+                return True
             except:
                 continue
+        return False
 
     async def _notify_channel(self, channel: Channel) -> bool:
         ":returns success."

@@ -1,0 +1,21 @@
+.container {
+    height: 100vh;
+    overflow: hidden;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+.videoPanel {
+    background-color: black;
+    flex: 1;
+}
+.video:focus {
+    outline: none;
+}
+
+.optionsPanel {
+    width: 20rem;
+    padding: 2rem;
+    background-color:  #353b48;
+    box-shadow: -2px 0px 2px  #353b48;
+}

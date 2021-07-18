@@ -22,8 +22,8 @@ export function useRoom(
 ): RoomState {
   const ws: MutableRefObject<WebSocket | null> = useRef(null);
   useEffect(() => {
-    // ws.current = new WebSocket("wss://watch-party.app.pxel.pw/ws" + pathname);
-    ws.current = new WebSocket("ws://localhost:8080/ws" + roomName);
+    ws.current = new WebSocket("wss://watch-party.app.pxel.pw/ws/" + roomName);
+    // ws.current = new WebSocket("ws://localhost:8080/ws/" + roomName);
     ws.current.onopen = () => console.log("ws-opened");
     ws.current.onclose = () => console.log("ws-closed");
     ws.current.onmessage = (e) => {
