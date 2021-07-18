@@ -13,7 +13,7 @@ async def main(websocket, path):
     name = await receiver.add_user(path, websocket)
     try:
         async for message in websocket:
-            await receiver.receive_message(path, message)
+            await receiver.receive_message(path, message, name)
         # await websocket.send(message)
     except ConnectionClosedError:
         print(f"Closed connection for {name}.")
@@ -21,6 +21,7 @@ async def main(websocket, path):
 
 if __name__ == '__main__':
 
+    # start_server = websockets.serve(main, "0.0.0.0", "8080")
     start_server = websockets.unix_serve(main, "/tmp/rt.sock")
 
     loop = asyncio.get_event_loop()

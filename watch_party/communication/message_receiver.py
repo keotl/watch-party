@@ -6,6 +6,7 @@ from jivago.lang.annotations import Inject
 import json
 from uuid import uuid4
 
+
 @Component
 class MessageReceiver(object):
 
@@ -22,12 +23,12 @@ class MessageReceiver(object):
         except:
             pass
         return ""
-        
-    async def receive_message(self, room_id: str, message: str):
+
+    async def receive_message(self, room_id: str, message: str, sender: str):
         try:
             parsed = parse_message(json.loads(message))
             room = self._room_repository.get_room(room_id)
-            await room.receive_message(parsed)
+            await room.receive_message(parsed, sender)
         except:
             pass
 

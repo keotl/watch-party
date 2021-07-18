@@ -1,22 +1,59 @@
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { useLocation } from "react-router-dom";
+import { useRoom } from "../api/useRoom";
 
 export function VideoPlayer() {
-  const [url, setUrl] = useState("");
   const { pathname } = useLocation();
-  const ws = useRef(new WebSocket("ws://watch-party.app.pxel.pw/ws"));
+  const [formUrl, setFormUrl] = useState("");
+  const videoElement = useRef<HTMLVideoElement>(null);
 
-  useEffect(() => {
-    ws.current = new WebSocket("wss://watch-party.app.pxel.pw/ws" + pathname);
-    ws.current.onopen = () => console.log("ws-opened");
-    ws.current.onclose = () => console.log("ws-closed");
-      ws.current.onmessage = e => console.log(e);
-    return () => ws.current.close();
-  }, [pathname]);
+  function onPlay(timestamp: number) {
+    if (videoElement.current) {
+      videoElement.current.currentTime = timestamp;
+      if (videoElement.current.paused) {
+        videoElement.current.play();
+      }
+    }
+  }
+
+  function onPause(timestamp: number) {
+    if (videoElement.current) {
+      if (!videoElement.current.paused) {
+        videoElement.current.currentTime = timestamp;
+        videoElement.current.pause();
+      }
+    }
+  }
+
+  function getCurrentState() {
+    if (videoElement.current) {
+      return {
+        isPaused: videoElement.current.paused,
+        currentTime: videoElement.current.currentTime,
+      };
+    }
+    return { isPaused: true, currentTime: 0 };
+  }
+
+  const room = useRoom(pathname, onPlay, onPause, getCurrentState);
 
   return (
     <div>
-      <video src={url} controls></video>
+      <video
+        ref={videoElement}
+        src={room.videoUrl}
+      onPlayCapture={(e) => {console.log(e);room.play(e.currentTarget.currentTime)}}
+        onPauseCapture={(e) => room.pause(e.currentTarget.currentTime)}
+        controls
+        muted
+      ></video>
+      <input
+        type="text"
+        name="video-url"
+        value={formUrl}
+        onChange={(e) => setFormUrl(e.target.value)}
+      />
+      <button onClick={() => room.setVideoUrl(formUrl)}>Set URL</button>
     </div>
   );
 }
